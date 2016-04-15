@@ -68,7 +68,7 @@ def main():
 		con = mdb.connect(BBDD_HOST, BBDD_USERNAME, BBDD_PASSWORD, BBDD_NAME)
 		cur = con.cursor()
 
-		sql = "SELECT ID FROM sumo.FUNCTIONALITY WHERE SUMO_ENUM!=''"
+		sql = "SELECT ID FROM sumo.FUNCTIONALITY WHERE SUMO_ENUM!='' and SUMO_ENUM!='UXO'"
 		logger.debug("sql: " + sql)
 		cur.execute(sql)
 		numrows = int(cur.rowcount)
