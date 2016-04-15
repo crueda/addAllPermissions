@@ -76,19 +76,33 @@ def main():
 		row = cur.fetchone()
 		while row is not None:			
 			funcionality = row[0]
-			curInsert = con.cursor()
-			sql = "INSERT INTO PACKAGES_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ")"
+			curCheck = con.cursor()
+			sql = "SELECT * FROM PACKAGES_FUNCTIONALITY WHERE FUNCTIONALITY_ID = " + str(funcionality) + " and PACKAGES_ID = " + str(PACKAGE)
 			logger.debug("sql: " + sql)
-			curInsert.execute(sql)
-			con.commit()
-			curInsert.close()
-
-			curInsert2 = con.cursor()
-			sql = "INSERT INTO USER_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID, USER_NAME) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ",'" + str(USERNAME) + "')"
+			curCheck.execute(sql)
+			numrows = int(cur.rowcount)
+			if (numrows==0):
+				curInsert = con.cursor()
+				sql = "INSERT INTO PACKAGES_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ")"
+				logger.debug("sql: " + sql)
+				curInsert.execute(sql)
+				con.commit()
+				curInsert.close()
+			curCheck.close()
+			
+			curCheck = con.cursor()
+			sql = "SELECT * FROM USER_FUNCTIONALITY WHERE FUNCTIONALITY_ID = " + str(funcionality) + " and PACKAGES_ID = " + str(PACKAGE) + " and USER_NAME='"  + str(USERNAME) + "'"
 			logger.debug("sql: " + sql)
-			curInsert2.execute(sql)
-			con.commit()
-			curInsert2.close()
+			curCheck.execute(sql)
+			numrows = int(cur.rowcount)
+			if (numrows==0):			
+				curInsert2 = con.cursor()
+				sql = "INSERT INTO USER_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID, USER_NAME) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ",'" + str(USERNAME) + "')"
+				logger.debug("sql: " + sql)
+				curInsert2.execute(sql)
+				con.commit()
+				curInsert2.close()
+			curCheck.close()
 
 			row = cur.fetchone()
 			
