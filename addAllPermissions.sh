@@ -80,7 +80,7 @@ def main():
 			sql = "SELECT * FROM PACKAGES_FUNCTIONALITY WHERE FUNCTIONALITY_ID = " + str(funcionality) + " and PACKAGES_ID = " + str(PACKAGE)
 			logger.debug("sql: " + sql)
 			curCheck.execute(sql)
-			numrows = int(cur.rowcount)
+			numrows = int(curCheck.rowcount)
 			if (numrows==0):
 				curInsert = con.cursor()
 				sql = "INSERT INTO PACKAGES_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ")"
@@ -94,7 +94,7 @@ def main():
 			sql = "SELECT * FROM USER_FUNCTIONALITY WHERE FUNCTIONALITY_ID = " + str(funcionality) + " and PACKAGES_ID = " + str(PACKAGE) + " and USER_NAME='"  + str(USERNAME) + "'"
 			logger.debug("sql: " + sql)
 			curCheck.execute(sql)
-			numrows = int(cur.rowcount)
+			numrows = int(curCheck.rowcount)
 			if (numrows==0):			
 				curInsert2 = con.cursor()
 				sql = "INSERT INTO USER_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID, USER_NAME) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ",'" + str(USERNAME) + "')"
