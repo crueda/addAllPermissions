@@ -73,15 +73,25 @@ def main():
 		cur.execute(sql)
 		numrows = int(cur.rowcount)
 		logger.debug("Permisos a insertar: " + str(numrows))
-		if (numrows>0):
-			row = cur.fetchone()
+		row = cur.fetchone()
+		while row is not None:			
 			funcionality = row[0]
 			curInsert = con.cursor()
 			sql = "INSERT INTO PACKAGES_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ")"
 			logger.debug("sql: " + sql)
-			#curInsert.execute(sql)
-			#con.commit()
+			curInsert.execute(sql)
+			con.commit()
 			curInsert.close()
+
+			curInsert2 = con.cursor()
+			sql = "INSERT INTO USER_FUNCTIONALITY (FUNCTIONALITY_ID, PACKAGES_ID, USER_NAME) VALUES (" + str(funcionality) + "," + str(PACKAGE) + ",'" + str(USERNAME) + "')"
+			logger.debug("sql: " + sql)
+			curInsert2.execute(sql)
+			con.commit()
+			curInsert2.close()
+
+			row = cur.fetchone()
+			
 
 	except mdb.Error, e:
 		logger.error ("Error %d: %s" % (e.args[0], e.args[1]))
